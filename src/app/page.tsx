@@ -1,9 +1,11 @@
-import Header from "@/components/header/Header";
+import Banner from "@/components/Banner";
 
 export default function Home() {
   return (
     <div>
-      <h2>Home Page</h2>
+      <main>
+        <Banner />
+      </main>
     </div>
   );
 }

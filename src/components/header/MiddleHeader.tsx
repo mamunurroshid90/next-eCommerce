@@ -12,7 +12,7 @@ const MiddleHeader = () => {
     <div className=" border-b-[1px] border-b-gray-500">
       <Container className=" py-5 flex items-center justify-between gap-6 md:gap-4">
         <Link href={"/"}>
-          <Image src={logo} alt="logo" className="w-28 h-12" />
+          <Image src={logo} alt="logo" className="w-28 h-12" priority />
         </Link>
         <SearchInput />
         {/* Users */}

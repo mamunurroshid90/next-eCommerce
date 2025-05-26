@@ -1,4 +1,5 @@
 import logo from "@/assets/logo.png";
-import bannerImgOne from "./banner/watch.jpg";
+import BannerImageOne from "@/assets/banner/bannerImageOne.png";
+import NotFount from "@/assets/not-found.png";
 
-export { logo, bannerImgOne };
+export { logo, BannerImageOne, NotFount };
