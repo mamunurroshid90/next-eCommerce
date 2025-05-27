@@ -2,6 +2,9 @@ import React from "react";
 import { ProductType } from "../../type";
 import Link from "next/link";
 import Image from "next/image";
+import SideBar from "./SideBar";
+import ProductPrice from "./ProductPrice";
+import AddToCardButton from "./AddToCardButton";
 
 const ProductCart = ({ product }: { product: ProductType }) => {
   return (
@@ -20,7 +23,20 @@ const ProductCart = ({ product }: { product: ProductType }) => {
           {product?.discountPercentage}%
         </p>
       </Link>
+      <SideBar />
       {/* description */}
+      <div className="border-t border-t-borderColor py-2 px-4 flex flex-col justify-between h-40">
+        <div>
+          <p className="text-sm font-medium text-lightText capitalize">
+            {product?.category}
+          </p>
+          <h2 className="font-semibold text-base line-clamp-2">
+            {product?.title}
+          </h2>
+          <ProductPrice product={product} />
+        </div>
+        <AddToCardButton />
+      </div>
     </div>
   );
 };
