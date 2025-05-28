@@ -10,7 +10,12 @@ const ProductCart = ({ product }: { product: ProductType }) => {
   return (
     <div className="border border-gray-400 hover:shadow-lg hover:shadow-black/30 duration-200 rounded-md group overflow-hidden relative">
       {/* image */}
-      <Link href={"/products"}>
+      <Link
+        href={{
+          pathname: `/products/${product?.id}`,
+          query: { id: product?.id },
+        }}
+      >
         <Image
           src={product?.images[0]}
           alt="product-image"
