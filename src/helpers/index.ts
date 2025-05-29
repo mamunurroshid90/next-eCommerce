@@ -4,6 +4,7 @@ export const getData = async (endpoint: string) => {
     headers: {
       "Content-Type": "application/json",
     },
+    // signal: AbortController.signal,
   });
   const data = await response?.json();
   return data;

@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/header/Header";
 import Footer from "@/components/Footer";
+import Layout from "@/components/Layout";
 
 export const metadata: Metadata = {
   title: "Next eCommerce",
@@ -16,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <Header />
-        {children}
-        <Footer />
+        <Layout>
+          <Header />
+          {children}
+          <Footer />
+        </Layout>
       </body>
     </html>
   );

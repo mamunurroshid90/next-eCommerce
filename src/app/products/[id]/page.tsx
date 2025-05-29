@@ -8,6 +8,8 @@ import { MdStar } from "react-icons/md";
 import { FaRegEye } from "react-icons/fa6";
 import PriceFormate from "@/components/PriceFormate";
 import AddToCardButton from "@/components/AddToCardButton";
+import Image from "next/image";
+import { paymentImage } from "@/assets";
 
 interface Props {
   params: {
@@ -90,9 +92,48 @@ const SingleProductPage = async ({ params }: Props) => {
             </span>
           ))}
         </p>
-        <AddToCardButton />
+        <AddToCardButton
+          product={product}
+          className="rounded-md uppercase font-semibold "
+        />
+        <div className="bg-[#f7f7f7] p-5 rounded-md flex flex-col items-center justify-center gap-2">
+          <Image
+            src={paymentImage}
+            alt="payment"
+            className="w-auto object-contain"
+          />
+          <p className="font-semibold">Guaranteed sage & secure checkout</p>
+        </div>
       </div>
       {/* Product Reviews */}
+      <div className="p-10 bg-[#f7f7f7] md:col-span-2 flex items-center gap-10">
+        {product?.reviews.map((item) => (
+          <div
+            key={item?.reviewerName}
+            className="bg-white/80 p-5 border border-slate-100 rounded-md hover:border-slate-500 hover:bg-white duration-200 flex flex-col gap-1"
+          >
+            <p className="text-base font-semibold">{item?.comment}</p>
+            <div className="text-xs">
+              <p className="font-semibold">{item?.reviewerName}</p>
+              <p>{item?.reviewerEmail}</p>
+            </div>
+            <div className="flex items-center">
+              <div className="flex items-center">
+                {Array?.from({ length: 5 })?.map((_, index) => (
+                  <MdStar
+                    key={index}
+                    className={`${
+                      index < item?.rating
+                        ? "text-yellow-500"
+                        : "text-lightText"
+                    }`}
+                  />
+                ))}
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </Container>
   );
 };

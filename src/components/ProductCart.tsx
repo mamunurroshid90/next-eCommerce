@@ -40,7 +40,7 @@ const ProductCart = ({ product }: { product: ProductType }) => {
           </h2>
           <ProductPrice product={product} />
         </div>
-        <AddToCardButton />
+        <AddToCardButton product={product} />
       </div>
     </div>
   );

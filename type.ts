@@ -36,13 +36,14 @@ export interface ProductType {
   reviews: Review[];
   returnPolicy: string;
   minimumOrderQuantity: number;
+  quantity?: number;
 
   images: string[];
   thumbnail: string;
 }
 
 export interface StateType {
-  shopy: {
+  eCommerce: {
     cart: ProductType[];
     favorite: ProductType[];
     userInfo: any;
