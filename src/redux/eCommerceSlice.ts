@@ -27,7 +27,25 @@ export const eCommerceSlice = createSlice({
         state.cart.push({ ...action.payload, quantity: 1 });
       }
     },
+    increaseQuantity: (state, action) => {
+      const existingProduct = state?.cart?.find(
+        (item) => item?.id === action.payload
+      );
+      if (existingProduct) {
+        existingProduct.quantity! += 1;
+      }
+    },
+
+    decreaseQuantity: (state, action) => {
+      const existingProduct = state?.cart?.find(
+        (item) => item?.id === action.payload
+      );
+      if (existingProduct) {
+        existingProduct.quantity! -= 1;
+      }
+    },
   },
 });
-export const { addToCart } = eCommerceSlice.actions;
+export const { addToCart, increaseQuantity, decreaseQuantity } =
+  eCommerceSlice.actions;
 export default eCommerceSlice.reducer;
