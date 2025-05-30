@@ -28,7 +28,7 @@ const ProductCart = ({ product }: { product: ProductType }) => {
           {product?.discountPercentage}%
         </p>
       </Link>
-      <SideBar />
+      <SideBar product={product} />
       {/* description */}
       <div className="border-t border-t-borderColor py-2 px-4 flex flex-col justify-between h-40">
         <div>
