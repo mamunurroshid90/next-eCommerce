@@ -67,7 +67,7 @@ const SingleProductPage = async ({ params }: Props) => {
         <p>
           You are saving
           <PriceFormate
-            amount={product?.discountPercentage / 100}
+            amount={(product?.price * product?.discountPercentage) / 100}
             className="text-base font-semibold text-green-500 mx-2"
           />
           upon purchase
