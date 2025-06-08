@@ -62,7 +62,7 @@ const CartProduct = ({ product }: { product: ProductType }) => {
               </button>
             </div>
           </div>
-          <div>
+          <div className="col-span-5">
             {product?.availabilityStatus && (
               <p className="flex space-x-2 text-sm text-gray-700">
                 <FaCheck className="text-lg text-green-500" />
