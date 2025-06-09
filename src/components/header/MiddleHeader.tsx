@@ -6,6 +6,7 @@ import Link from "next/link";
 import { LiaUserSolid } from "react-icons/lia";
 import HeaderIcons from "./HeaderIcons";
 import MobileNavbar from "./MobileNavbar";
+import SignInButton from "../SignInButton";
 
 const MiddleHeader = () => {
   return (
@@ -17,21 +18,7 @@ const MiddleHeader = () => {
         <SearchInput />
         {/* Users */}
         <div className=" hidden md:inline-flex">
-          <Link
-            href={"/signin"}
-            className=" flex items-center space-x-2 text-sm"
-          >
-            <div className=" border-2 border-gray-700 rounded-full text-xl">
-              <LiaUserSolid />
-            </div>
-            <div>
-              <p className="text-xs">Hello, guests</p>
-              <p>login / registration</p>
-            </div>
-          </Link>
-        </div>
-        {/* Headers icons */}
-        <div className=" hidden md:inline-flex">
+          <SignInButton />
           <HeaderIcons />
         </div>
         <MobileNavbar />
