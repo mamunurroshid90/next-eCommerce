@@ -26,7 +26,6 @@ const CartSummary = ({ cart }: Props) => {
 
   const handleCheckout = () => {
     toast.success("Checkout is coming soon..");
-    alert("checkout is coming..");
   };
 
   return (

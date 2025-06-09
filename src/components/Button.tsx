@@ -24,6 +24,7 @@ const Button = ({ children, className, href, onClick }: Props) => {
         </Link>
       ) : (
         <button
+          onClick={onClick}
           className={twMerge(
             "bg-themeColor/80 text-white py-2 px-6 hover:bg-themeColor cursor-pointer duration-200",
             className
