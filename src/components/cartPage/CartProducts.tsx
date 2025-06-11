@@ -1,4 +1,4 @@
-import React from "react";
+"use client";
 import { useSelector } from "react-redux";
 import { ProductType, StateType } from "../../../type";
 import Link from "next/link";

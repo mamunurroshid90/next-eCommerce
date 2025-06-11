@@ -2,8 +2,11 @@ import React from "react";
 import Container from "../Container";
 import { navigation } from "@/constants";
 import Link from "next/link";
+import { getServerSession } from "next-auth";
+import SignOut from "../SignOut";
 
-const BottomHeader = () => {
+const BottomHeader = async () => {
+  const session = await getServerSession();
   return (
     <div className=" border-b border-b-gray-400">
       <Container className=" flex items-center justify-between py-1">
@@ -17,9 +20,13 @@ const BottomHeader = () => {
               {item?.title}
             </Link>
           ))}
-          <Link href={"/signin"} className="hover:text-themeColor duration-200">
-            Please Signin to view your cart
-          </Link>
+          {session?.user ? (
+            <SignOut />
+          ) : (
+            <p className="hover:text-themeColor duration-200">
+              Please Signin to view your cart
+            </p>
+          )}
         </div>
         <div className=" hidden md:inline-flex text-xs text-gray-400">
           Hotline <span className="text-black">+88017654855522</span>
