@@ -1,10 +1,10 @@
-"use client";
+// "use client";
 import React, { useEffect, useState } from "react";
 import Title from "../Title";
 import PriceFormate from "../PriceFormate";
 import { ProductType } from "../../../type";
 import Button from "../Button";
-import toast from "react-hot-toast";
+import { useSession } from "next-auth/react";
 
 interface Props {
   cart: ProductType[];
@@ -13,6 +13,8 @@ interface Props {
 const CartSummary = ({ cart }: Props) => {
   const [totalAmnt, setTotalAmnt] = useState(0);
   const [discountAmnt, setDiscountAmnt] = useState(0);
+
+  const { data: session } = useSession();
 
   useEffect(() => {
     let amnt = 0;
@@ -25,8 +27,19 @@ const CartSummary = ({ cart }: Props) => {
     setDiscountAmnt(discount);
   }, [cart]);
 
-  const handleCheckout = () => {
-    toast.success("Checkout is coming soon..");
+  const handleCheckout = async () => {
+    const response = await fetch("/api/checkout", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        items: cart,
+        email: session?.user?.email,
+      }),
+    });
+    const checkoutSession = await response?.json();
+    console.log("checkout", checkoutSession);
   };
 
   return (

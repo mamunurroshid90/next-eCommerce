@@ -6,7 +6,7 @@ import { LiaUserSolid } from "react-icons/lia";
 
 const SignInButton = () => {
   const { data: session } = useSession();
-  console.log(session);
+
   return (
     <>
       {session?.user ? (
