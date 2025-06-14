@@ -5,6 +5,7 @@ import PriceFormate from "../PriceFormate";
 import { ProductType } from "../../../type";
 import Button from "../Button";
 import { useSession } from "next-auth/react";
+import { loadStripe } from "@stripe/stripe-js";
 
 interface Props {
   cart: ProductType[];
@@ -21,13 +22,19 @@ const CartSummary = ({ cart }: Props) => {
     let discount = 0;
     cart?.map((item) => {
       amnt += item?.price * item?.quantity!;
-      discount += ((item?.price * item?.quantity!) / 100) * item?.quantity!;
+      discount +=
+        ((item?.price * item?.discountPercentage!) / 100) * item?.quantity!;
     });
     setTotalAmnt(amnt);
     setDiscountAmnt(discount);
   }, [cart]);
 
+  const stripePromise = loadStripe(
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+  );
+
   const handleCheckout = async () => {
+    const stripe = await stripePromise;
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: {
@@ -39,7 +46,13 @@ const CartSummary = ({ cart }: Props) => {
       }),
     });
     const checkoutSession = await response?.json();
-    console.log("checkout", checkoutSession);
+    const result: any = await stripe?.redirectToCheckout({
+      sessionId: checkoutSession?.id,
+    });
+
+    if (result?.error) {
+      window.alert(result?.error?.message);
+    }
   };
 
   return (

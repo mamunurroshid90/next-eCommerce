@@ -66,6 +66,7 @@ export const eCommerceSlice = createSlice({
     },
     resetFavorite: (state) => {
       state.favorite = [];
+      localStorage.removeItem("cart");
     },
   },
 });
