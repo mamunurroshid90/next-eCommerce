@@ -9,17 +9,17 @@ import { CiSearch } from "react-icons/ci";
 
 const SearchInput = () => {
   const [search, setSearch] = useState("");
-  const [products, setProducts] = useState([]);
-  const [filteredProducts, setFilteredProducts] = useState([]);
+  const [products, setProducts] = useState<ProductType[]>([]);
+  const [filteredProducts, setFilteredProducts] = useState<ProductType[]>([]);
   const [isInputFocused, setIsInputFocused] = useState(false);
-  const searchContainerRef = useRef(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const getProducts = async () => {
       const endpoints = "https://dummyjson.com/products";
       try {
         const data = await getData(endpoints);
-        setProducts(data?.products);
+        setProducts(data?.products || []);
       } catch (error) {
         console.log("Error fetching data", error);
       }
@@ -28,8 +28,8 @@ const SearchInput = () => {
   }, []);
 
   useEffect(() => {
-    const filtered = products?.filter((item: ProductType) =>
-      item?.title.toLocaleLowerCase().includes(search.toLowerCase())
+    const filtered = products.filter((item) =>
+      item.title.toLowerCase().includes(search.toLowerCase())
     );
     setFilteredProducts(filtered);
   }, [search, products]);
@@ -37,9 +37,8 @@ const SearchInput = () => {
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
       if (
-        searchContainerRef &&
-        // @ts-ignore
-        !searchContainerRef.current.contains(e.target)
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(e.target as Node)
       ) {
         setIsInputFocused(false);
       }
@@ -54,14 +53,14 @@ const SearchInput = () => {
   return (
     <div
       ref={searchContainerRef}
-      className=" hidden md:inline-flex flex-1 h-10 relative"
+      className="hidden md:inline-flex flex-1 h-10 relative"
     >
       <input
         type="text"
         placeholder="Search Products here..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className=" w-full h-full border-2 border-themeColor px-4 outline-none"
+        className="w-full h-full border-2 border-themeColor px-4 outline-none"
         onFocus={() => setIsInputFocused(true)}
       />
       {search && (
@@ -75,25 +74,25 @@ const SearchInput = () => {
       </span>
 
       {isInputFocused && search && (
-        <div className="absolute left-0 top-12 w-full mx-auto h-auto max-h-96 bg-white rounded-md overflow-y-scroll cursor-pointer text-black ">
-          {filteredProducts?.length > 0 ? (
+        <div className="absolute left-0 top-12 w-full mx-auto h-auto max-h-96 bg-white rounded-md overflow-y-scroll cursor-pointer text-black">
+          {filteredProducts.length > 0 ? (
             <div>
-              {filteredProducts?.map((item: ProductType) => (
+              {filteredProducts.map((item) => (
                 <Link
-                  key={item?.id}
+                  key={item.id}
                   href={{
-                    pathname: `/products/${item?.id}`,
-                    query: { id: item?.id },
+                    pathname: `/products/${item.id}`,
+                    query: { id: item.id },
                   }}
                   className="flex items-center gap-x-2 text-base font-medium hover:bg-lightText/30 px-3 py-1.5"
                   onClick={() => setSearch("")}
                 >
-                  <CiSearch className="text-lg" /> {item?.title}
+                  <CiSearch className="text-lg" /> {item.title}
                 </Link>
               ))}
             </div>
           ) : (
-            <div>
+            <div className="p-3">
               <p className="text-base">
                 Nothing matched with{" "}
                 <span className="font-semibold underline underline-offset-2 decoration-[1px]">

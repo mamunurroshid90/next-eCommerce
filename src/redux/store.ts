@@ -11,7 +11,6 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
-
 import createWebStorage from "redux-persist/es/storage/createWebStorage";
 
 export function createPersistStore(): WebStorage {
@@ -58,4 +57,4 @@ export const store = configureStore({
     }),
 });
 
-export let persistor = persistStore(store);
+export const persistor = persistStore(store);

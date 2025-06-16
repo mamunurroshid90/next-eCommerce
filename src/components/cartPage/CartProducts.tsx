@@ -1,16 +1,15 @@
 "use client";
 import { useSelector } from "react-redux";
 import { ProductType, StateType } from "../../../type";
-import Link from "next/link";
 import Button from "../Button";
 import CartProduct from "./CartProduct";
 import CartSummary from "./CartSummary";
 
 const CartProducts = () => {
-  const { cart } = useSelector((state: StateType) => state?.eCommerce);
+  const { cart } = useSelector((state: StateType) => state.eCommerce);
   return (
     <div>
-      {cart?.length > 0 ? (
+      {cart.length > 0 ? (
         <>
           <h1 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
             Shopping Cart
@@ -18,8 +17,8 @@ const CartProducts = () => {
           <div className="mt-10 lg:grid lg:grid-cols-12 lg:items-start lg:gap-x-12">
             <section className="lg:col-span-7">
               <div className="divide-y divide-gray-200 border-b border-t border-gray-200">
-                {cart?.map((product: ProductType) => (
-                  <CartProduct key={product?.id} product={product} />
+                {cart.map((product: ProductType) => (
+                  <CartProduct key={product.id} product={product} />
                 ))}
               </div>
             </section>

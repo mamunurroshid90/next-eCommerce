@@ -1,11 +1,11 @@
-// "use client";
+"use client";
 import React, { useEffect, useState } from "react";
 import Title from "../Title";
 import PriceFormate from "../PriceFormate";
 import { ProductType } from "../../../type";
 import Button from "../Button";
 import { useSession } from "next-auth/react";
-import { loadStripe } from "@stripe/stripe-js";
+import { loadStripe, StripeError } from "@stripe/stripe-js";
 
 interface Props {
   cart: ProductType[];
@@ -20,21 +20,25 @@ const CartSummary = ({ cart }: Props) => {
   useEffect(() => {
     let amnt = 0;
     let discount = 0;
-    cart?.map((item) => {
-      amnt += item?.price * item?.quantity!;
-      discount +=
-        ((item?.price * item?.discountPercentage!) / 100) * item?.quantity!;
+
+    cart.forEach((item) => {
+      const quantity = item.quantity || 1;
+      amnt += item.price * quantity;
+      discount += item.price * (item.discountPercentage / 100) * quantity;
     });
+
     setTotalAmnt(amnt);
     setDiscountAmnt(discount);
   }, [cart]);
 
   const stripePromise = loadStripe(
-    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!
+    process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY as string
   );
 
   const handleCheckout = async () => {
     const stripe = await stripePromise;
+    if (!stripe) return;
+
     const response = await fetch("/api/checkout", {
       method: "POST",
       headers: {
@@ -45,13 +49,20 @@ const CartSummary = ({ cart }: Props) => {
         email: session?.user?.email,
       }),
     });
-    const checkoutSession = await response?.json();
-    const result: any = await stripe?.redirectToCheckout({
-      sessionId: checkoutSession?.id,
+
+    const checkoutSession = await response.json();
+
+    if (!checkoutSession?.id) {
+      console.error("Failed to create checkout session");
+      return;
+    }
+
+    const result = await stripe.redirectToCheckout({
+      sessionId: checkoutSession.id,
     });
 
-    if (result?.error) {
-      window.alert(result?.error?.message);
+    if (result.error) {
+      window.alert(result.error.message);
     }
   };
 
@@ -61,18 +72,18 @@ const CartSummary = ({ cart }: Props) => {
       <div className="mt-5 flex flex-col gap-3">
         <div className="flex items-center justify-between">
           <Title className="text-lg font-medium">Sub Total</Title>
-          <PriceFormate amount={totalAmnt}></PriceFormate>
+          <PriceFormate amount={totalAmnt} />
         </div>
         <div className="flex items-center justify-between">
           <Title className="text-lg font-medium">Discount</Title>
-          <PriceFormate amount={discountAmnt}></PriceFormate>
+          <PriceFormate amount={discountAmnt} />
         </div>
         <div className="flex items-center justify-between">
           <Title className="text-lg font-medium">Payable Amount</Title>
           <PriceFormate
             amount={totalAmnt - discountAmnt}
             className="text-lg font-bold"
-          ></PriceFormate>
+          />
         </div>
         <Button onClick={handleCheckout}>Checkout</Button>
       </div>

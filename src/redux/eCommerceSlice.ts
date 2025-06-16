@@ -1,13 +1,19 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ProductType } from "../../type";
 
-interface initialState {
-  cart: ProductType[];
-  favorite: ProductType[];
-  userInfo: any;
+interface UserInfo {
+  name?: string;
+  email?: string;
+  // Add other user properties as needed
 }
 
-const initialState: initialState = {
+interface InitialState {
+  cart: ProductType[];
+  favorite: ProductType[];
+  userInfo: UserInfo | null;
+}
+
+const initialState: InitialState = {
   cart: [],
   favorite: [],
   userInfo: null,
@@ -17,9 +23,9 @@ export const eCommerceSlice = createSlice({
   name: "eCommerce",
   initialState,
   reducers: {
-    addToCart: (state, action) => {
-      const existingProduct = state?.cart?.find(
-        (item) => item?.id === action.payload?.id
+    addToCart: (state, action: PayloadAction<ProductType>) => {
+      const existingProduct = state.cart.find(
+        (item) => item.id === action.payload.id
       );
       if (existingProduct) {
         existingProduct.quantity! += 1;
@@ -27,38 +33,35 @@ export const eCommerceSlice = createSlice({
         state.cart.push({ ...action.payload, quantity: 1 });
       }
     },
-    increaseQuantity: (state, action) => {
-      const existingProduct = state?.cart?.find(
-        (item) => item?.id === action.payload
+    increaseQuantity: (state, action: PayloadAction<number>) => {
+      const existingProduct = state.cart.find(
+        (item) => item.id === action.payload
       );
       if (existingProduct) {
         existingProduct.quantity! += 1;
       }
     },
-
-    decreaseQuantity: (state, action) => {
-      const existingProduct = state?.cart?.find(
-        (item) => item?.id === action.payload
+    decreaseQuantity: (state, action: PayloadAction<number>) => {
+      const existingProduct = state.cart.find(
+        (item) => item.id === action.payload
       );
-      if (existingProduct) {
+      if (existingProduct && existingProduct.quantity! > 1) {
         existingProduct.quantity! -= 1;
       }
     },
-    removeFromCart: (state, action) => {
-      state.cart = state.cart.filter((item) => item?.id !== action.payload);
+    removeFromCart: (state, action: PayloadAction<number>) => {
+      state.cart = state.cart.filter((item) => item.id !== action.payload);
     },
     resetCart: (state) => {
       state.cart = [];
     },
-    // Favorite cart
-    addToFavorite: (state, action) => {
-      const existingProduct = state?.favorite?.find(
-        (item) => item?.id === action.payload?.id
+    addToFavorite: (state, action: PayloadAction<ProductType>) => {
+      const existingProduct = state.favorite.find(
+        (item) => item.id === action.payload.id
       );
-
       if (existingProduct) {
         state.favorite = state.favorite.filter(
-          (item) => item?.id !== action.payload.id
+          (item) => item.id !== action.payload.id
         );
       } else {
         state.favorite.push(action.payload);
@@ -66,10 +69,13 @@ export const eCommerceSlice = createSlice({
     },
     resetFavorite: (state) => {
       state.favorite = [];
-      localStorage.removeItem("cart");
+    },
+    setUserInfo: (state, action: PayloadAction<UserInfo>) => {
+      state.userInfo = action.payload;
     },
   },
 });
+
 export const {
   addToCart,
   increaseQuantity,
@@ -78,5 +84,7 @@ export const {
   resetCart,
   addToFavorite,
   resetFavorite,
+  setUserInfo,
 } = eCommerceSlice.actions;
+
 export default eCommerceSlice.reducer;

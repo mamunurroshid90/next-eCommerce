@@ -2,23 +2,28 @@ import { NextRequest, NextResponse } from "next/server";
 import { ProductType } from "../../../../type";
 import Stripe from "stripe";
 
+interface ErrorResponse {
+  message: string;
+  statusCode?: number;
+}
+
 export const POST = async (request: NextRequest) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   try {
     const reqBody = await request.json();
-    const { items, email } = await reqBody;
+    const { items, email } = reqBody; // Removed unnecessary await
 
-    const extractingItems = await items?.map((item: ProductType) => ({
-      quantity: item?.quantity,
+    const extractingItems = items?.map((item: ProductType) => ({
+      quantity: item.quantity, // Removed optional chaining if quantity is required
       price_data: {
         currency: "usd",
         unit_amount: Math.round(
-          item?.price * 100 * (1 - item?.discountPercentage / 100)
+          item.price * 100 * (1 - item.discountPercentage / 100)
         ),
         product_data: {
-          name: item?.title,
-          description: item?.description,
-          images: item?.images,
+          name: item.title,
+          description: item.description,
+          images: item.images,
         },
       },
     }));
@@ -34,14 +39,19 @@ export const POST = async (request: NextRequest) => {
       },
     });
 
-    // console.log("session", session);
-
     return NextResponse.json({
-      message: "Keep alive",
+      message: "Payment session created successfully",
       success: true,
-      id: session?.id,
+      id: session.id, // Removed optional chaining since session will always have id
     });
-  } catch (error: any) {
-    return NextResponse.json({ error: error?.message }, { status: 500 });
+  } catch (error: unknown) {
+    // Type-safe error handling
+    if (error instanceof Error) {
+      return NextResponse.json({ error: error.message }, { status: 500 });
+    }
+    return NextResponse.json(
+      { error: "An unknown error occurred" },
+      { status: 500 }
+    );
   }
 };
