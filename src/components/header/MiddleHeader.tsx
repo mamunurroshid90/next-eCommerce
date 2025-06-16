@@ -17,7 +17,7 @@ const MiddleHeader = () => {
         </Link>
         <SearchInput />
         {/* Users */}
-        <div className=" hidden md:inline-flex">
+        <div className=" flex gap-x-2 items-center md:inline-flex">
           <SignInButton />
           <HeaderIcons />
         </div>

@@ -24,8 +24,8 @@ const SignInButton = () => {
             />
           </div>
           <div>
-            <p className="text-xs">{session?.user?.name}</p>
-            <p>Signout</p>
+            <p className=" hidden text-xs">{session?.user?.name}</p>
+            <p className=" font-semibold">Signout</p>
           </div>
         </div>
       ) : (

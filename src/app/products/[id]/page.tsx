@@ -106,7 +106,7 @@ const SingleProductPage = async ({ params }: Props) => {
         </div>
       </div>
       {/* Product Reviews */}
-      <div className="p-10 bg-[#f7f7f7] md:col-span-2 flex items-center gap-10">
+      <div className="p-10 bg-[#f7f7f7] md:col-span-2 flex flex-wrap items-center gap-10">
         {product?.reviews.map((item) => (
           <div
             key={item?.reviewerName}
