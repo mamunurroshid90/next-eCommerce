@@ -2,19 +2,14 @@ import { NextRequest, NextResponse } from "next/server";
 import { ProductType } from "../../../../type";
 import Stripe from "stripe";
 
-interface ErrorResponse {
-  message: string;
-  statusCode?: number;
-}
-
 export const POST = async (request: NextRequest) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   try {
     const reqBody = await request.json();
-    const { items, email } = reqBody; // Removed unnecessary await
+    const { items, email } = reqBody;
 
-    const extractingItems = items?.map((item: ProductType) => ({
-      quantity: item.quantity, // Removed optional chaining if quantity is required
+    const extractingItems = items.map((item: ProductType) => ({
+      quantity: item.quantity || 1, // Added fallback for quantity
       price_data: {
         currency: "usd",
         unit_amount: Math.round(
@@ -42,10 +37,9 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({
       message: "Payment session created successfully",
       success: true,
-      id: session.id, // Removed optional chaining since session will always have id
+      id: session.id,
     });
   } catch (error: unknown) {
-    // Type-safe error handling
     if (error instanceof Error) {
       return NextResponse.json({ error: error.message }, { status: 500 });
     }

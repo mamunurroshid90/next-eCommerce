@@ -83,7 +83,7 @@ const CartProduct = ({ product }: { product: ProductType }) => {
               </p>
             )}
             <p>
-              You're saving <PriceFormate amount={totalSavings} />
+              You&apos;re saving <PriceFormate amount={totalSavings} />
             </p>
           </div>
         </div>

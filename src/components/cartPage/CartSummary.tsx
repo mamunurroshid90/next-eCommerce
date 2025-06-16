@@ -5,7 +5,7 @@ import PriceFormate from "../PriceFormate";
 import { ProductType } from "../../../type";
 import Button from "../Button";
 import { useSession } from "next-auth/react";
-import { loadStripe, StripeError } from "@stripe/stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 interface Props {
   cart: ProductType[];
