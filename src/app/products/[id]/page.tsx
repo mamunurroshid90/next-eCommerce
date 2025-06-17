@@ -11,15 +11,9 @@ import AddToCardButton from "@/components/AddToCardButton";
 import Image from "next/image";
 import { paymentImage } from "@/assets";
 
-interface Props {
-  params: {
-    id: string;
-  };
-  searchParams?: Record<string, string | string[] | undefined>;
-}
-
-const SingleProductPage = async ({ params }: Props) => {
-  const { id } = params;
+export default async function SingleProductPage(props: any) {
+  const params = await props.params;
+  const id = params.id;
 
   const endpoint = `https://dummyjson.com/products/${id}`;
   let product: ProductType | null = null;
@@ -48,10 +42,10 @@ const SingleProductPage = async ({ params }: Props) => {
           <div className="flex items-center gap-1">
             <div className="text-base text-lightText flex items-center">
               {Array.from({ length: 5 }).map((_, index) => {
-                const filled = index + 1 <= Math.floor(product!.rating);
+                const filled = index + 1 <= Math.floor(product.rating);
                 const halfFilled =
-                  index + 1 > Math.floor(product!.rating) &&
-                  index < Math.ceil(product!.rating);
+                  index + 1 > Math.floor(product.rating) &&
+                  index < Math.ceil(product.rating);
                 return (
                   <MdStar
                     key={index}
@@ -66,9 +60,9 @@ const SingleProductPage = async ({ params }: Props) => {
                 );
               })}
             </div>
-            <p className="text-base font-semibold">{`(${product.rating.toFixed(
-              1
-            )} reviews)`}</p>
+            <p className="text-base font-semibold">
+              ({product.rating.toFixed(1)} reviews)
+            </p>
           </div>
         </div>
         <p className="flex items-center">
@@ -101,7 +95,7 @@ const SingleProductPage = async ({ params }: Props) => {
             {product.tags.map((item, index) => (
               <span key={index} className="font-medium capitalize">
                 {item}
-                {index < product.tags!.length - 1 && ", "}
+                {index < product.tags.length - 1 && ", "}
               </span>
             ))}
           </p>
@@ -154,6 +148,4 @@ const SingleProductPage = async ({ params }: Props) => {
       )}
     </Container>
   );
-};
-
-export default SingleProductPage;
+}
