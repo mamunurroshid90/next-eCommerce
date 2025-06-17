@@ -7,25 +7,17 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "cdn.dummyjson.com",
       },
+      // Add GitHub avatars domain
       {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      // Add Google user content domains
       {
         protocol: "https",
         hostname: "lh3.googleusercontent.com",
       },
-      {
-        protocol: "https",
-        hostname: "dummyjson.com", // Add this for your product images
-      },
     ],
-  },
-  typescript: {
-    ignoreBuildErrors: false, // Keep this false for proper type checking
-  },
-  eslint: {
-    ignoreDuringBuilds: false, // Keep this false for proper linting
   },
 };
 

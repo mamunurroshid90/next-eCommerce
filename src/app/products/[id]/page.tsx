@@ -1,6 +1,7 @@
 import Container from "@/components/Container";
 import ProductImages from "@/components/ProductImages";
 import { getData } from "@/helpers";
+import React from "react";
 import { ProductType } from "../../../../type";
 import ProductPrice from "@/components/ProductPrice";
 import { MdStar } from "react-icons/md";
@@ -10,20 +11,21 @@ import AddToCardButton from "@/components/AddToCardButton";
 import Image from "next/image";
 import { paymentImage } from "@/assets";
 
-export async function generateMetadata({ params }: { params: { id: string } }) {
-  const product = await getData(`https://dummyjson.com/products/${params.id}`);
-  return {
-    title: product?.title || "Product Not Found",
-    description: product?.description,
+interface Props {
+  params: {
+    id: string;
   };
+  searchParams?: Record<string, string | string[] | undefined>;
 }
 
-const SingleProductPage = async ({ params }: { params: { id: string } }) => {
+const SingleProductPage = async ({ params }: Props) => {
   const { id } = params;
+
+  const endpoint = `https://dummyjson.com/products/${id}`;
   let product: ProductType | null = null;
 
   try {
-    product = await getData(`https://dummyjson.com/products/${id}`);
+    product = await getData(endpoint);
   } catch (error) {
     console.error("Failed to fetch product:", error);
     return <div className="text-center py-10">Failed to load product</div>;
