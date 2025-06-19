@@ -11,9 +11,16 @@ import AddToCardButton from "@/components/AddToCardButton";
 import Image from "next/image";
 import { paymentImage } from "@/assets";
 
-export default async function SingleProductPage(props: any) {
-  const params = await props.params;
-  const id = params.id;
+type PageParams = {
+  id: string
+}
+
+type SingleProductPageProps = {
+  params: Promise<PageParams>
+}
+
+export default async function SingleProductPage({ params }: SingleProductPageProps) {
+  const { id } = await params;
 
   const endpoint = `https://dummyjson.com/products/${id}`;
   let product: ProductType | null = null;
